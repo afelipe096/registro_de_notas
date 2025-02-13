@@ -1,46 +1,57 @@
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
-// Clase Universidad que maneja la lista de estudiantes
-class Universidad {
-    private final List<Estudiante> estudiantes;
+// Clase Universidad (Main) que maneja la entrada de datos y la ejecución
+public class Universidad {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        List<Estudiante> estudiantes = new ArrayList<>(); // Lista de estudiantes
 
-    // Constructor
-    public Universidad() {
-        this.estudiantes = new ArrayList<>();
-    }
+        System.out.print("Ingrese el número de estudiantes: ");
+        int numEstudiantes = scanner.nextInt();
+        scanner.nextLine(); // Limpiar buffer
 
-    // Método para agregar un estudiante a la universidad
-    public void agregarEstudiante(Estudiante estudiante) {
-        estudiantes.add(estudiante);
-    }
+        // Bucle para registrar varios estudiantes
+        for (int e = 1; e <= numEstudiantes; e++) {
+            System.out.print("\nIngrese el nombre del estudiante " + e + ": ");
+            String nombreEstudiante = scanner.nextLine();
+            Estudiante estudiante = new Estudiante(nombreEstudiante);
 
-    // Método para verificar si un ID ya está registrado
-    public boolean existeEstudiante(int id) {
-        for (Estudiante estudiante : estudiantes) {
-            if (estudiante.getId() == id) {
-                return true;
-            }
-        }
-        return false;
-    }
+            System.out.print("Ingrese el número de asignaturas para " + nombreEstudiante + ": ");
+            int numAsignaturas = scanner.nextInt();
+            scanner.nextLine(); // Limpiar buffer
 
-    // Método para calcular el promedio de una asignatura entre todos los estudiantes
-    public double calcularPromedioPorAsignatura(String nombreAsignatura) {
-        double suma = 0;
-        int contador = 0;
-        for (Estudiante estudiante : estudiantes) {
-            for (Asignatura asignatura : estudiante.getAsignaturas()) {
-                if (asignatura.getNombre().equals(nombreAsignatura)) {
-                    suma += asignatura.calcularNotaDefinitiva();
-                    contador++;
+            // Bucle para registrar varias asignaturas
+            for (int i = 1; i <= numAsignaturas; i++) {
+                System.out.print("Ingrese el nombre de la asignatura " + i + ": ");
+                String nombreAsignatura = scanner.nextLine();
+                Asignatura asignatura = new Asignatura(nombreAsignatura);
+
+                System.out.print("Ingrese el número de notas para " + nombreAsignatura + ": ");
+                int numNotas = scanner.nextInt();
+
+                // Bucle para ingresar varias notas en una asignatura
+                for (int j = 1; j <= numNotas; j++) {
+                    System.out.print("Ingrese la nota " + j + ": ");
+                    double nota = scanner.nextDouble();
+                    asignatura.agregarNota(nota);
                 }
-            }
-        }
-        return contador == 0 ? 0 : suma / contador;
-    }
+                scanner.nextLine(); // Limpiar buffer
 
-    // Getters
-    public List<Estudiante> getEstudiantes() { return estudiantes; }
+                estudiante.agregarAsignatura(asignatura); // Agregar la asignatura al estudiante
+            }
+
+            estudiantes.add(estudiante); // Agregar el estudiante a la lista
+        }
+
+        // Mostrar promedios de todos los estudiantes
+        System.out.println("\n📌 Promedios de los estudiantes:");
+        for (Estudiante estudiante : estudiantes) {
+            System.out.println("🔹 " + estudiante.getNombre() + " - Promedio General: " + estudiante.calcularPromedioGeneral());
+        }
+
+        scanner.close(); // Cerrar el scanner
+    }
 }

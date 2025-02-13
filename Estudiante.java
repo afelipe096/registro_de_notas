@@ -1,17 +1,14 @@
 import java.util.ArrayList;
 import java.util.List;
 
-// Clase que representa a un estudiante
-class Estudiante {
-    private final int id; // Identificador único del estudiante
-    private final String nombre; // Nombre del estudiante
-    private final List<Asignatura> asignaturas; // Lista de asignaturas del estudiante
+public class Estudiante {
+    private String nombre;
+    private List<Asignatura> asignaturas; // Lista de asignaturas del estudiante
 
-    // Constructor
-    public Estudiante(int id, String nombre) {
-        this.id = id;
+    // Constructor que inicializa el nombre y la lista de asignaturas
+    public Estudiante(String nombre) {
         this.nombre = nombre;
-        this.asignaturas = new ArrayList<>();
+        this.asignaturas = new ArrayList<>(); // Ahora sí reconoce ArrayList
     }
 
     // Método para agregar una asignatura al estudiante
@@ -21,15 +18,17 @@ class Estudiante {
 
     // Método para calcular el promedio general del estudiante
     public double calcularPromedioGeneral() {
+        if (asignaturas.isEmpty()) return 0; // Si no tiene asignaturas, retorna 0
+
         double suma = 0;
         for (Asignatura asignatura : asignaturas) {
             suma += asignatura.calcularNotaDefinitiva();
         }
-        return asignaturas.isEmpty() ? 0 : suma / asignaturas.size();
+        return suma / asignaturas.size(); // Promedio de las notas definitivas
     }
 
-    // Getters
-    public int getId() { return id; }
-    public String getNombre() { return nombre; }
-    public List<Asignatura> getAsignaturas() { return asignaturas; }
+    // Método para obtener el nombre del estudiante
+    public String getNombre() {
+        return nombre;
+    }
 }
